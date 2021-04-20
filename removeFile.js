@@ -8,10 +8,8 @@ const deledeQuestion =  function(pathDir){
     process.stdin,
     process.stdout
   );  
-  interface.setPrompt(`Directory is not empty, do you want to remove all content [yes]/no `);
-  interface.prompt();
-  interface.on('line', (answer) => {
-    if (answer === "yes"){
+  interface.question(`Directory is not empty, do you want to remove all content [yes]/no?`, (answer) => {
+    if (answer.trim() === "yes"){
       try{
         const fileObj = fs.readdirSync(pathDir, { withFileTypes: true });
         let countDir = 0;
@@ -22,9 +20,9 @@ const deledeQuestion =  function(pathDir){
           } else{
             countFile += 1;
           }
-          { withFileTypes: true }
         });
-        console.log(`Remove ${countDir} directories, ${countFile} archivos`);
+        console.log(`Remove ${countDir} directories, ${countFile} archivos`); 
+         //fs.rmSync(pathDir, { recursive: true });
       } catch(err){
         console.log(err);
       }
@@ -35,27 +33,22 @@ const deledeQuestion =  function(pathDir){
 
 
 
-const isEmptyDir = function(pathDir){
-  try{
-  const fileObj = fs.readdirSync(pathDir);
-  return fileObj.length === 0
-  }catch(err){
-    console.log(err) 
-  }
+const isEmptyDir = function(file){
+  return file.length === 0
 }
 
 const deledeDir =  function(pathDir){
-  if (fs.existsSync(pathDir)){
-    if (isEmptyDir(pathDir)){
-      //fs.rmSync(pathDir, { recursive: true });
-      console.log('The directory was empty, but it has removed')
-    } else {
-      deledeQuestion(pathDir);
+  const fileObj = fs.readdir(pathDir, (err, file)=>{
+    if (err){
+      console.log(err);
+    } else{
+      if (isEmptyDir(file)){
+        //fs.rmSync(pathDir, { recursive: true });
+        return console.log('The directory was empty, but it has removed'); 
+      } 
+      return deledeQuestion(pathDir);
     }
-  } else {
-    throw new Error("The path is not valid");
-  }
-  return ""
-};
+  });
+}
 
-console.log( deledeDir('C:/Users/Usuario1/Documents/Ksquare/Node.js/DeledeFile/delede'))
+deledeDir('C:/Users/Usuario1/Documents/Ksquare/Node.js/DeledeFile/delede');

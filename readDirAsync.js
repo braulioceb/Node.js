@@ -1,10 +1,10 @@
 const fs = require('fs');
-//const fsPromise = require('fs').promises;
+const fsPromise = require('fs').promises;
 const path = require('path');
 
-const readDir =  function(pathDirectory = __dirname){
+const readDir = async function(pathDirectory = __dirname){
   try{
-    fileObjs = fs.readdirSync(pathDirectory, { withFileTypes: true });
+    fileObjs = await fsPromise.readdir(pathDirectory, { withFileTypes: true });
     fileObjs.forEach(file => {
       if (file.isDirectory()){
         console.log(file.name+"/");
@@ -22,3 +22,5 @@ if (process.argv[2] !== undefined){
 } else{
   readDir();
 }
+
+//Dirección de prueba ....        C:/Users/Usuario1/Documents/Ksquare/Node.js/Firstevent/.
