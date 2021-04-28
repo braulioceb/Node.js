@@ -22,7 +22,7 @@ const deledeQuestion =  function(pathDir){
           }
         });
         console.log(`Remove ${countDir} directories, ${countFile} archivos`); 
-         //fs.rmSync(pathDir, { recursive: true });
+         fs.rmSync(pathDir, { recursive: true });
       } catch(err){
         console.log(err);
       }
@@ -40,10 +40,10 @@ const isEmptyDir = function(file){
 const deledeDir =  function(pathDir){
   const fileObj = fs.readdir(pathDir, (err, file)=>{
     if (err){
-      console.log(err);
+      return console.log(err);
     } else{
       if (isEmptyDir(file)){
-        //fs.rmSync(pathDir, { recursive: true });
+        fs.rmSync(pathDir, { recursive: true });
         return console.log('The directory was empty, but it has removed'); 
       } 
       return deledeQuestion(pathDir);
@@ -51,4 +51,10 @@ const deledeDir =  function(pathDir){
   });
 }
 
-deledeDir('C:/Users/Usuario1/Documents/Ksquare/Node.js/DeledeFile/delede');
+//deledeDir('C:/Users/Usuario1/Documents/Ksquare/Node.js/DeledeFile/delete');
+
+if (process.argv[2] !== undefined){
+  deledeDir(process.argv[2]);
+} else{
+  console.log("nungun archivo ha sido borrado");
+}
